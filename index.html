@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>ลงทะเบียนคนไข้ · ปราณีคลินิก</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#2f7cf6;--p-d:#1d4fc4;--ar:47,124,246;--grad:linear-gradient(135deg,#6cb8ff 0%,#3b8cff 50%,#3a62ea 100%);
+  --text:#0d2444;--text2:#2c476e;--muted:#536d96;--faint:#8aa0bf;
+  --line:rgba(255,255,255,.9);--ctl-line:rgba(186,209,241,.95);--surface:rgba(255,255,255,.62);
+  --ease:cubic-bezier(.2,.8,.2,1);--spring:cubic-bezier(.34,1.56,.64,1);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:radial-gradient(700px 520px at 50% 6%,#4a8fea 0%,rgba(74,143,234,0) 70%),radial-gradient(600px 500px at 100% 100%,#5b7ff0 0%,rgba(91,127,240,0) 70%),radial-gradient(560px 480px at 0% 100%,#fff 0%,rgba(255,255,255,0) 70%),linear-gradient(180deg,#8cbcf2 0%,#a8cdf6 55%,#cfe1fa 100%) fixed #a8cdf6;min-height:100%}
+body{margin:0;color:var(--text);font-family:'IBM Plex Sans Thai','Leelawadee UI',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;min-height:100vh}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.2;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{max-width:560px;margin:0 auto;padding:22px 16px calc(40px + env(safe-area-inset-bottom))}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.logo{width:36px;height:36px;border-radius:11px;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:700;font-size:17px;box-shadow:0 6px 16px rgba(var(--ar),.35)}
+.brand b{font-size:17px}
+h1{font-size:27px;margin:0 0 4px;letter-spacing:-.01em}
+.lead{margin:0 0 18px;color:var(--text2);font-size:15px;line-height:1.55}
+.card{background:var(--surface);backdrop-filter:blur(26px) saturate(1.6);-webkit-backdrop-filter:blur(26px) saturate(1.6);border:1px solid var(--line);border-radius:22px;padding:20px 18px;margin-bottom:14px;box-shadow:0 14px 40px rgba(28,78,168,.14),inset 0 1px 0 #fff;animation:rise .55s var(--ease) both}
+.card:nth-of-type(2){animation-delay:.06s}.card:nth-of-type(3){animation-delay:.12s}.card:nth-of-type(4){animation-delay:.18s}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}}
+.sect{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;margin-bottom:14px}
+.num{width:26px;height:26px;border-radius:50%;background:rgba(var(--ar),.14);color:var(--p-d);display:grid;place-items:center;font-size:13px;font-weight:700}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.full{grid-column:1 / -1}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--text2);font-weight:500;min-width:0}
+.req{color:#d92d20}
+.hint{font-size:12px;color:var(--muted);font-weight:400}
+input,select,textarea{font-family:inherit;font-size:16px;color:var(--text);width:100%;min-width:0;height:48px;border:1px solid var(--ctl-line);border-radius:14px;padding:0 14px;background:rgba(255,255,255,.82);transition:border-color .2s,box-shadow .2s,background-color .2s}
+textarea{height:auto;padding:12px 14px;resize:vertical}
+select{appearance:none;-webkit-appearance:none;padding-right:36px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2394a3b8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 8l4.5 4.5L14.5 8'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:16px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--p);background-color:#fff;box-shadow:0 0 0 4px rgba(var(--ar),.18)}
+input.bad{border-color:#d92d20;box-shadow:0 0 0 4px rgba(217,45,32,.12)}
+::placeholder{color:#9db0cb}
+.dob{display:grid;grid-template-columns:.8fr 1.5fr 1fr;gap:8px;margin-top:8px}
+.mono{font-family:ui-monospace,Menlo,monospace}
+input[data-list]{cursor:pointer;padding-right:34px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2394a3b8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 8l4.5 4.5L14.5 8'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:16px}
+input[readonly]{caret-color:transparent}
+#picker{display:none;position:fixed;z-index:40;overflow:auto;padding:6px;background:rgba(255,255,255,.92);backdrop-filter:blur(24px) saturate(1.7);-webkit-backdrop-filter:blur(24px) saturate(1.7);border:1px solid #fff;border-radius:16px;box-shadow:0 20px 50px rgba(25,70,150,.24),0 2px 6px rgba(25,70,150,.08);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+#picker.open{animation:pkin .22s var(--ease)}
+@keyframes pkin{from{opacity:0;transform:translateY(-6px) scale(.98)}}
+.pk-o{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:10px;font-size:15px;color:var(--text);cursor:pointer;white-space:nowrap}
+.pk-o small{margin-left:auto;color:var(--muted);font-size:12px}
+.pk-o b{margin-left:auto;color:var(--p);font-weight:700}
+.pk-o small + b{margin-left:8px}
+.pk-o.hi,.pk-o:hover{background:rgba(var(--ar),.1)}
+.pk-o.cur{color:var(--p-d);font-weight:600}
+.allergy input{border-color:#f1c5c5;background:#fffafa}
+.consent{display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.6;color:var(--text2);cursor:pointer}
+.consent input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:var(--p)}
+.lockline{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted);margin-top:12px}
+.btn{width:100%;height:56px;border:0;border-radius:16px;background:var(--grad);color:#fff;font-family:inherit;font-size:18px;font-weight:600;cursor:pointer;box-shadow:0 10px 26px rgba(var(--ar),.35),inset 0 1px 0 rgba(255,255,255,.4);transition:transform .15s var(--ease),filter .2s;position:relative;overflow:hidden}
+.btn:active{transform:scale(.97)}
+.btn:disabled{filter:grayscale(.4) brightness(.95);cursor:default}
+.btn-o{background:rgba(255,255,255,.8);color:var(--p-d);box-shadow:0 4px 14px rgba(28,78,168,.1);border:1px solid var(--ctl-line)}
+.err{background:#fdeaea;color:#b42318;border-radius:14px;padding:12px 14px;font-size:14px;margin-bottom:12px;display:none}
+.spin{width:22px;height:22px;border-radius:50%;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;display:inline-block;vertical-align:-5px;margin-right:8px;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.done{text-align:center;padding:34px 22px}
+.check{width:92px;height:92px;margin:0 auto 18px;border-radius:50%;background:var(--grad);display:grid;place-items:center;box-shadow:0 14px 34px rgba(var(--ar),.4);animation:pop .6s var(--spring) both}
+.check svg{stroke-dasharray:30;stroke-dashoffset:30;animation:draw .5s .35s var(--ease) forwards}
+@keyframes pop{from{transform:scale(0)}}@keyframes draw{to{stroke-dashoffset:0}}
+.done h2{margin:0 0 8px;font-size:24px}.done p{margin:0 0 22px;color:var(--text2);line-height:1.6}
+.hidden{display:none!important}
+@media (max-width:420px){.grid{grid-template-columns:1fr}.grid > .half-ok{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="wrap">
+  <div class="brand"><span class="logo">ป</span><b>ปราณีคลินิก</b></div>
+
+  <div id="bad-link" class="card hidden"><div class="sect">ลิงก์ไม่ครบ</div><p class="lead" style="margin:0">กรุณาสแกน QR ที่เคาน์เตอร์คลินิกอีกครั้ง</p></div>
+
+  <div id="demo" class="hidden" style="background:#fff4e0;border:1px solid #f3d9a4;color:#9a5b00;border-radius:14px;padding:10px 14px;font-size:14px;margin-bottom:14px">ตัวอย่างหน้าแบบฟอร์ม · ยังไม่ได้เชื่อมต่อ กดส่งได้แต่ข้อมูลไม่ถูกส่งไปไหน</div>
+<form id="f" novalidate>
+    <h1>ลงทะเบียนคนไข้ใหม่</h1>
+    <p class="lead">กรอกข้อมูลของผู้ป่วยให้ครบ เพื่อลดเวลารอที่เคาน์เตอร์ ช่องที่มี <span class="req">*</span> ต้องกรอก</p>
+
+    <div class="card">
+      <div class="sect"><span class="num">1</span>ข้อมูลส่วนตัว</div>
+      <div class="grid">
+        <label class="f">คำนำหน้า<input name="title" value="นาง" readonly data-list="dl-title"></label>
+        <label class="f">เพศ<input name="sex" value="หญิง" readonly data-list="dl-sex"></label>
+        <label class="f"><span>ชื่อ <span class="req">*</span></span><input name="first" autocomplete="given-name" required></label>
+        <label class="f"><span>นามสกุล <span class="req">*</span></span><input name="last" autocomplete="family-name" required></label>
+        <div class="f full"><span>วันเกิด <span class="hint">(พ.ศ. · พิมพ์ วว/ดด/ปปปป หรือเลือกจากรายการ)</span></span>
+          <input name="dobText" class="mono" data-part="text" inputmode="numeric" placeholder="วว/ดด/ปปปป" autocomplete="off" aria-label="วันเกิดแบบพิมพ์">
+          <span class="dob"><input name="dobD" data-part="d" data-list="dl-d" inputmode="numeric" placeholder="วัน" autocomplete="off"><input name="dobM" data-part="m" data-list="dl-m" inputmode="none" placeholder="เดือน" autocomplete="off"><input name="dobY" data-part="y" data-list="dl-y" inputmode="numeric" placeholder="ปี" autocomplete="off"></span></div>
+        <label class="f full">เลขบัตรประชาชน <span class="hint">(ไม่บังคับ)</span><input name="cid" inputmode="numeric" placeholder="1-2345-67890-12-3" autocomplete="off"></label>
+        <label class="f">เบอร์โทร<input name="phone" type="tel" inputmode="tel" placeholder="08x-xxx-xxxx" autocomplete="tel"></label>
+        <label class="f">อาชีพ<input name="job"></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sect"><span class="num">2</span>ที่อยู่</div>
+      <div class="grid">
+        <label class="f"><span>บ้านเลขที่ <span class="req">*</span></span><input name="houseNo" inputmode="text" required></label>
+        <label class="f">หมู่<input name="moo" inputmode="numeric"></label>
+        <label class="f full">ตำบล<input name="tambon" data-list="dl-tambon" data-dl="1" autocomplete="off"></label>
+        <label class="f">อำเภอ<input name="amphoe" data-list="dl-amphoe" data-dl="1" value="เมืองสุพรรณบุรี" autocomplete="off"></label>
+        <label class="f">จังหวัด<input name="province" data-list="dl-province" data-dl="1" value="สุพรรณบุรี" autocomplete="off"></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sect"><span class="num">3</span>ข้อมูลสุขภาพ</div>
+      <div class="grid">
+        <label class="f full allergy">แพ้ยา / แพ้อาหาร<input name="allergy" placeholder="ถ้าไม่มี เว้นว่างไว้"></label>
+        <label class="f full">โรคประจำตัว<input name="chronic" placeholder="เช่น ความดันโลหิตสูง, เบาหวาน"></label>
+        <label class="f full">ผู้ติดต่อฉุกเฉิน<input name="emergency" placeholder="ชื่อ (ความสัมพันธ์) เบอร์โทร"></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <label class="consent"><input type="checkbox" name="consent">
+        <span>ยินยอมให้ปราณีคลินิกเก็บและใช้ข้อมูลนี้เพื่อการรักษาและติดต่อนัดหมาย <span class="req">*</span></span></label>
+      <div class="lockline"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>ข้อมูลถูกเข้ารหัสบนเครื่องของคุณก่อนส่ง มีเพียงคอมพิวเตอร์ของคลินิกที่เปิดอ่านได้</div>
+    </div>
+
+    <div class="err" id="err"></div>
+    <button class="btn" id="send" type="submit">ส่งข้อมูล</button>
+  </form>
+
+  <div id="done" class="card done hidden">
+    <div class="check"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h2>ส่งข้อมูลเรียบร้อย</h2>
+    <p>แจ้งชื่อกับเจ้าหน้าที่ที่เคาน์เตอร์ได้เลย<br>ขอบคุณค่ะ</p>
+    <button class="btn btn-o" id="again" type="button">กรอกให้อีกคน</button>
+  </div>
+</div>
+
+<datalist id="dl-amphoe"></datalist><datalist id="dl-tambon"></datalist><datalist id="dl-province"></datalist><datalist id="dl-title"></datalist><datalist id="dl-sex"></datalist><datalist id="dl-d"></datalist><datalist id="dl-m"></datalist><datalist id="dl-y"></datalist>
+<div id="picker" role="listbox"></div>
+
+<script>
+'use strict';
+// Link format: form.html#k=<clinic public key, base64url P-256 raw>&u=<Apps Script web-app URL>
+const SUPHAN = {
+  'เมืองสุพรรณบุรี': ['ท่าพี่เลี้ยง','รั้วใหญ่','ทับตีเหล็ก','ท่าระหัด','ไผ่ขวาง','โคกโคเฒ่า','ดอนตาล','ดอนมะสังข์','พิหารแดง','ดอนกำยาน','ดอนโพธิ์ทอง','บ้านโพธิ์','สระแก้ว','ตลิ่งชัน','บางกุ้ง','ศาลาขาว','สวนแตง','สนามชัย','โพธิ์พระยา','สนามคลี'],
+  'เดิมบางนางบวช': ['เขาพระ','เดิมบาง','นางบวช','เขาดิน','ปากน้ำ','ทุ่งคลี','โคกช้าง','หัวเขา','หัวนา','บ่อกรุ','วังศรีราช','ป่าสะแก','ยางนอน','หนองกระทุ่ม'],
+  'ด่านช้าง': ['หนองมะค่าโมง','ด่านช้าง','ห้วยขมิ้น','องค์พระ','วังคัน','นิคมกระเสียว','วังยาว'],
+  'บางปลาม้า': ['โคกคราม','บางปลาม้า','ตะค่า','บางใหญ่','กฤษณา','สาลี','ไผ่กองดิน','องครักษ์','จระเข้ใหญ่','บ้านแหลม','มะขามล้ม','วังน้ำเย็น','วัดโบสถ์','วัดดาว'],
+  'ศรีประจันต์': ['ศรีประจันต์','บ้านกร่าง','มดแดง','บางงาม','ดอนปรู','ปลายนา','วังหว้า','วังน้ำซับ','วังยาง'],
+  'ดอนเจดีย์': ['ดอนเจดีย์','หนองสาหร่าย','ไร่รถ','สระกระโจม','ทะเลบก'],
+  'สองพี่น้อง': ['สองพี่น้อง','บางเลน','บางตาเถร','บางตะเคียน','บ้านกุ่ม','หัวโพธิ์','บางพลับ','เนินพระปรางค์','บ้านช้าง','ต้นตาล','ศรีสำราญ','ทุ่งคอก','หนองบ่อ','บ่อสุพรรณ','ดอนมะนาว'],
+  'สามชุก': ['ย่านยาว','วังลึก','สามชุก','หนองผักนาก','บ้านสระ','หนองสะเดา','กระเสียว'],
+  'อู่ทอง': ['อู่ทอง','สระยายโสม','จรเข้สามพัน','บ้านดอน','ยุ้งทะลาย','ดอนมะเกลือ','หนองโอ่ง','ดอนคา','พลับพลาไชย','บ้านโข้ง','เจดีย์','สระพังลาน','กระจัน'],
+  'หนองหญ้าไซ': ['หนองหญ้าไซ','หนองราชวัตร','หนองโพธิ์','แจงงาม','หนองขาม','ทัพหลวง']
+};
+const MONTHS_FULL = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const $ = s => document.querySelector(s), F = $('#f'), E = F.elements;
+const hash = new URLSearchParams(location.hash.slice(1)), KEY = hash.get('k'), URL_ = hash.get('u'), CID = hash.get('c'), DEMO = hash.get('demo') === '1';
+if (DEMO) $('#demo').classList.remove('hidden');
+else if (!KEY || !URL_ || !/^[A-Za-z0-9_-]{22}$/.test(CID || '') || !/^https:\/\/script\.google(usercontent)?\.com\//.test(URL_)) { F.classList.add('hidden'); $('#bad-link').classList.remove('hidden'); }
+
+// --- dropdown lists (same glass picker as the clinic app)
+const MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const be = new Date().getFullYear() + 543;
+const dl = (id, list) => { $('#' + id).innerHTML = list.map(it => Array.isArray(it) ? `<option value="${it[0]}" data-sub="${it[1]}">` : `<option value="${it}">`).join(''); };
+dl('dl-title', ['นาย','นาง','นางสาว','ด.ช.','ด.ญ.']); dl('dl-sex', ['หญิง','ชาย']);
+dl('dl-d', Array.from({length:31}, (_, i) => String(i + 1))); dl('dl-m', MONTHS_FULL); dl('dl-y', Array.from({length:100}, (_, i) => String(be - i)));
+dl('dl-amphoe', Object.keys(SUPHAN)); dl('dl-province', ['สุพรรณบุรี','กาญจนบุรี','นครปฐม','อ่างทอง','ชัยนาท','อุทัยธานี','สิงห์บุรี','พระนครศรีอยุธยา','กรุงเทพมหานคร']);
+const fillTambon = () => { const a = E.amphoe.value.trim(); dl('dl-tambon', SUPHAN[a] ? SUPHAN[a].map(t => [t, 'อ.' + a]) : Object.entries(SUPHAN).flatMap(([k, ts]) => ts.map(t => [t, 'อ.' + k]))); };
+fillTambon();
+// title picks the sex; a Suphan tambon fills its amphoe
+function afterPick(el){
+  if (el.name === 'title') E.sex.value = ['นาย','ด.ช.'].includes(el.value) ? 'ชาย' : 'หญิง';
+  if (el.name === 'amphoe') fillTambon();
+  if (el.name === 'tambon') { const a = Object.keys(SUPHAN).find(k => SUPHAN[k].includes(el.value.trim())); if (a && E.amphoe.value !== a) { E.amphoe.value = a; fillTambon(); } }
+}
+
+// --- picker
+const PK = {el:null, items:[], hi:-1}, box = $('#picker');
+const listOf = el => { const d = document.getElementById(el.dataset.list); return d ? [...d.options].map(o => ({v:o.value, sub:o.dataset.sub || ''})) : []; };
+function renderPicker(keepHi){
+  const el = PK.el; if (!el) return;
+  const all = el.readOnly, q = all ? '' : el.value.trim(), cur = all ? el.value : (q || el.dataset.prev || '');
+  let list = listOf(el); if (q) list = list.filter(i => i.v.includes(q) || i.sub.includes(q));
+  PK.items = list; if (!list.length) { box.style.display = 'none'; return; }
+  if (!keepHi) PK.hi = q ? 0 : Math.max(0, list.findIndex(i => i.v === cur));
+  box.innerHTML = list.map((it, i) => `<div class="pk-o${i === PK.hi ? ' hi' : ''}${it.v === cur ? ' cur' : ''}" data-i="${i}"><span>${it.v}</span>${it.sub ? `<small>${it.sub}</small>` : ''}${it.v === cur ? '<b>✓</b>' : ''}</div>`).join('');
+  const r = el.getBoundingClientRect(), vh = window.visualViewport ? visualViewport.height : innerHeight, below = vh - r.bottom, w = Math.max(r.width, 160);
+  box.style.left = Math.max(8, Math.min(r.left, innerWidth - w - 8)) + 'px'; box.style.minWidth = w + 'px';
+  if (below < 220 && r.top > below) { box.style.top = 'auto'; box.style.bottom = (innerHeight - r.top + 6) + 'px'; box.style.maxHeight = Math.min(300, r.top - 16) + 'px'; }
+  else { box.style.bottom = 'auto'; box.style.top = (r.bottom + 6) + 'px'; box.style.maxHeight = Math.min(300, below - 16) + 'px'; }
+  if (box.style.display !== 'block') { box.style.display = 'block'; box.classList.remove('open'); void box.offsetWidth; box.classList.add('open'); }
+  const hi = box.querySelector('.hi'); if (hi) hi.scrollIntoView({block:'nearest'});
+}
+const openPicker = el => { PK.el = el; renderPicker(); };
+const closePicker = () => { PK.el = null; box.style.display = 'none'; };
+function choosePick(i){
+  const it = PK.items[i], el = PK.el; if (!it || !el) return;
+  closePicker(); el.value = it.v; el.dataset.typed = '1';
+  el.dispatchEvent(new InputEvent('input', {bubbles:true, inputType:'insertReplacementText'})); afterPick(el);
+  if (el.dataset.part === 'd' || el.dataset.part === 'm') (el.dataset.part === 'd' ? E.dobM : E.dobY).focus();
+  else if (el.readOnly) el.blur();
+}
+box.addEventListener('mousedown', e => { e.preventDefault(); const o = e.target.closest('.pk-o'); if (o) choosePick(+o.dataset.i); });
+
+// --- date control (typed field with automatic "/", plus day / month / year boxes)
+const dp = {d:'', m:'', y:'', text:''};
+const monthName = m => m ? MONTHS_FULL[+m - 1] : '';
+const textOf = q => (q.d || q.m || q.y) ? `${q.d || ''}/${q.m || ''}/${q.y || ''}` : '';
+const compose = q => { if (!(q.d && q.m && q.y)) return ''; const y = +q.y - 543, m = +q.m, d = +q.d, x = new Date(y, m - 1, d); return (x.getFullYear() === y && x.getMonth() === m - 1 && x.getDate() === d) ? `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}` : ''; };
+function parseText(t){
+  const tk = t.match(/\d+|[ก-๙][ก-๙.]*/g) || [], num = x => /^\d+$/.test(x || '') ? +x : null;
+  let d = num(tk[0]), m = num(tk[1]), y = num(tk[2]);
+  if (m === null && tk[1]) { const i = MONTHS_FULL.findIndex(x => x.startsWith(tk[1])), j = MONTHS.findIndex(x => x.startsWith(tk[1])); m = i >= 0 ? i + 1 : j >= 0 ? j + 1 : null; }
+  if (y !== null) { if (y < 100) y += 2500; else if (y < 2400) y += 543; }
+  return {d: d && d >= 1 && d <= 31 ? String(d) : '', m: m && m >= 1 && m <= 12 ? String(m) : '', y: y && y >= 2400 ? String(y) : '', text:t};
+}
+function parsePart(part, v){
+  v = v.trim();
+  if (part === 'd') { const n = /^\d{1,2}$/.test(v) ? +v : 0; return n >= 1 && n <= 31 ? String(n) : ''; }
+  if (part === 'm') { if (/^\d{1,2}$/.test(v)) { const n = +v; return n >= 1 && n <= 12 ? String(n) : ''; } if (!v) return ''; const i = MONTHS_FULL.findIndex(x => x.startsWith(v)), j = MONTHS.findIndex(x => x.startsWith(v)); return i >= 0 ? String(i + 1) : j >= 0 ? String(j + 1) : ''; }
+  const n = /^\d{4}$/.test(v) ? +v : 0; return n >= 2400 ? String(n) : n >= 1800 ? String(n + 543) : '';
+}
+function maskDate(v, deleting){
+  if (!/^[\d\/]*$/.test(v)) return v;
+  const segs = ['', '', ''], max = [2, 2, 4]; let i = 0;
+  for (const ch of v) { if (ch === '/') { if (segs[i] && i < 2) i++; continue; } if (segs[i].length >= max[i]) { if (i < 2) i++; else continue; } segs[i] += ch; }
+  let out = segs[0];
+  if (i >= 1 || (segs[0].length === 2 && !deleting)) out += '/';
+  if (i >= 1) { out += segs[1]; if (i >= 2 || (segs[1].length === 2 && !deleting)) out += '/'; }
+  if (i >= 2) out += segs[2];
+  return out;
+}
+const dEl = () => ({text:E.dobText, d:E.dobD, m:E.dobM, y:E.dobY});
+function syncDob(except){ const els = dEl(); for (const k in els) if (k !== except) els[k].value = k === 'm' ? monthName(dp.m) : dp[k]; }
+function onDob(t, e){
+  const part = t.dataset.part; let overflow = '';
+  if (part === 'text') {
+    if (t.selectionStart === t.value.length) { const m = maskDate(t.value, (e.inputType || '').startsWith('delete')); if (m !== t.value) t.value = m; }
+    Object.assign(dp, parseText(t.value));
+  } else {
+    const raw = t.value.trim(), max = part === 'y' ? 4 : 2;
+    if (/^\d+$/.test(raw) && raw.length > max) { if (part !== 'y') overflow = raw.slice(max); t.value = raw.slice(0, max); }
+    dp[part] = parsePart(part, t.value); dp.text = textOf(dp);
+  }
+  syncDob(part);
+  if (part === 'text' || part === 'y') return;
+  const v = t.value.trim();
+  if (overflow || (part === 'd' && dp.d && (/^\d{2}$/.test(v) || /^[4-9]$/.test(v))) || (part === 'm' && dp.m && (/^\d{2}$/.test(v) || /^[2-9]$/.test(v)))) {
+    const nx = part === 'd' ? E.dobM : E.dobY; nx.focus(); if (overflow) { nx.value = overflow; onDob(nx, {}); }
+  }
+}
+const resetDob = () => { Object.assign(dp, {d:'', m:'', y:'', text:''}); syncDob(); };
+
+// --- events: boxes with lists clear on focus so the whole list shows (old value comes back if nothing typed)
+const isDl = t => t.dataset && ((t.dataset.part && t.dataset.part !== 'text') || t.dataset.dl);
+const PH = {d:'วัน', m:'เดือน', y:'ปี'};
+F.addEventListener('focusin', e => {
+  const t = e.target;
+  if (isDl(t)) { t.dataset.prev = t.value; t.dataset.typed = ''; t.placeholder = t.value || PH[t.dataset.part] || ''; t.value = ''; }
+  if (t.dataset && t.dataset.list) openPicker(t);
+});
+F.addEventListener('focusout', e => {
+  const t = e.target; if (PK.el === t) closePicker();
+  if (!isDl(t)) return;
+  const restore = t.value.trim() === '' && t.dataset.prev && !t.dataset.typed, part = t.dataset.part, v = t.value.trim();
+  t.placeholder = PH[part] || '';
+  if (restore) t.value = t.dataset.prev;
+  else if (part === 'y' && /^\d{2}$/.test(v)) { t.value = String(2500 + +v); onDob(t, {}); }
+  else if (part === 'm' && dp.m) t.value = monthName(dp.m);
+  else if (part === 'y' && dp.y) t.value = dp.y;
+  delete t.dataset.prev; delete t.dataset.typed;
+});
+F.addEventListener('click', e => { const t = e.target; if (t.readOnly && t.dataset.list) { if (PK.el === t) closePicker(); else openPicker(t); } });
+F.addEventListener('input', e => {
+  const t = e.target; t.classList.remove('bad'); if (isDl(t)) t.dataset.typed = '1';
+  if (t.dataset.part) onDob(t, e);
+  if (t.name === 'tambon' || t.name === 'amphoe') afterPick(t);
+  if (PK.el === t) renderPicker();
+});
+F.addEventListener('keydown', e => {
+  const t = e.target; if (PK.el !== t) return;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); PK.hi = Math.max(0, Math.min(PK.items.length - 1, PK.hi + (e.key === 'ArrowDown' ? 1 : -1))); renderPicker(true); }
+  else if (e.key === 'Enter') { if (PK.items.length) { e.preventDefault(); choosePick(PK.hi); } }
+  else if (e.key === 'Escape') closePicker();
+});
+addEventListener('scroll', e => { if (PK.el && !(e.target.closest && e.target.closest('#picker'))) renderPicker(true); }, true);
+if (window.visualViewport) visualViewport.addEventListener('resize', () => { if (PK.el) renderPicker(true); });
+
+// phone / ID formatting as they type
+E.cid.addEventListener('input', () => { const d = E.cid.value.replace(/\D/g, '').slice(0, 13); const p = [d.slice(0,1), d.slice(1,5), d.slice(5,10), d.slice(10,12), d.slice(12)].filter(Boolean); E.cid.value = p.join('-'); E.cid.classList.remove('bad'); });
+E.phone.addEventListener('input', () => { const d = E.phone.value.replace(/\D/g, '').slice(0, 10); E.phone.value = d.length > 6 ? `${d.slice(0,3)}-${d.slice(3,6)}-${d.slice(6)}` : d.length > 3 ? `${d.slice(0,3)}-${d.slice(3)}` : d; });
+const thaiIdOk = d => { let s = 0; for (let i = 0; i < 12; i++) s += +d[i] * (13 - i); return (11 - s % 11) % 10 === +d[12]; };
+
+// --- encryption: ephemeral ECDH P-256 + AES-GCM (only the clinic's private key can decrypt)
+const b64u = buf => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const unb64u = s => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/') + '==='.slice((s.length + 3) % 4)), c => c.charCodeAt(0));
+async function encrypt(obj){
+  const pub = await crypto.subtle.importKey('raw', unb64u(KEY), {name:'ECDH', namedCurve:'P-256'}, false, []);
+  const eph = await crypto.subtle.generateKey({name:'ECDH', namedCurve:'P-256'}, true, ['deriveKey']);
+  const aes = await crypto.subtle.deriveKey({name:'ECDH', public:pub}, eph.privateKey, {name:'AES-GCM', length:256}, false, ['encrypt']);
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = await crypto.subtle.encrypt({name:'AES-GCM', iv}, aes, new TextEncoder().encode(JSON.stringify(obj)));
+  return {v:1, epk:b64u(await crypto.subtle.exportKey('raw', eph.publicKey)), iv:b64u(iv), ct:b64u(ct)};
+}
+
+const showErr = m => { const e = $('#err'); e.textContent = m; e.style.display = m ? 'block' : 'none'; if (m) e.scrollIntoView({behavior:'smooth', block:'center'}); };
+F.addEventListener('submit', async e => {
+  e.preventDefault(); showErr('');
+  const v = k => (E[k].value || '').trim();
+  if (!v('first') || !v('last')) return showErr('กรุณากรอกชื่อและนามสกุล');
+  if (!v('houseNo')) { E.houseNo.classList.add('bad'); return showErr('กรุณากรอกบ้านเลขที่'); }
+  const cidD = v('cid').replace(/\D/g, '');
+  if (cidD && (cidD.length !== 13 || !thaiIdOk(cidD))) { E.cid.classList.add('bad'); return showErr('เลขบัตรประชาชนไม่ถูกต้อง ตรวจอีกครั้ง หรือเว้นว่างไว้'); }
+  if (!E.consent.checked) return showErr('กรุณาติ๊กยินยอมให้เก็บข้อมูลก่อนส่ง');
+  const dob = compose(dp);
+  if ((dp.d || dp.m || dp.y || v('dobText')) && !dob) return showErr('วันเกิดไม่ครบหรือไม่ถูกต้อง ตรวจอีกครั้ง หรือเว้นว่างไว้');
+  const data = {title:v('title'), first:v('first'), last:v('last'), sex:v('sex') === 'ชาย' ? 'M' : 'F', dob, cid:v('cid'), phone:v('phone'), job:v('job'),
+    houseNo:v('houseNo'), moo:v('moo'), tambon:v('tambon'), amphoe:v('amphoe'), province:v('province'),
+    allergy:v('allergy'), chronic:v('chronic'), emergency:v('emergency'), sentAt:new Date().toISOString()};
+  const btn = $('#send'); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>กำลังส่ง…';
+  try {
+    if (DEMO) { await new Promise(r => setTimeout(r, 700)); F.reset(); resetDob(); fillTambon(); F.classList.add('hidden'); $('#done').classList.remove('hidden'); scrollTo({top:0, behavior:'smooth'}); return; }
+    const payload = {...await encrypt(data), cid:CID};
+    const r = await fetch(URL_, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload)});
+    const j = await r.json().catch(() => ({}));
+    if (!j.ok) throw new Error(j.error || 'send');
+    F.reset(); resetDob(); fillTambon(); F.classList.add('hidden'); $('#done').classList.remove('hidden'); scrollTo({top:0, behavior:'smooth'});
+  } catch (err) {
+    showErr(err && err.message === 'full' ? 'ระบบรับข้อมูลเต็มชั่วคราว กรุณาแจ้งเจ้าหน้าที่' : 'ส่งไม่สำเร็จ ตรวจอินเทอร์เน็ตแล้วลองกดส่งอีกครั้ง');
+  } finally { btn.disabled = false; btn.textContent = 'ส่งข้อมูล'; }
+});
+$('#again').addEventListener('click', () => { $('#done').classList.add('hidden'); F.classList.remove('hidden'); fillTambon(); scrollTo({top:0}); });
+</script>
+</body>
+</html>
