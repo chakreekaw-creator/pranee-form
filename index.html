@@ -70,6 +70,8 @@ input[readonly]{caret-color:transparent}
 @keyframes pop{from{transform:scale(0)}}@keyframes draw{to{stroke-dashoffset:0}}
 .done h2{margin:0 0 8px;font-size:24px}.done p{margin:0 0 22px;color:var(--text2);line-height:1.6}
 .hidden{display:none!important}
+.choice{display:grid;gap:12px;margin-top:6px}.choice .btn{height:auto;padding:16px 18px;text-align:left;display:flex;flex-direction:column;gap:2px}.choice small{font-size:14px;font-weight:400;opacity:.85}
+.back{background:none;border:0;color:var(--p-d);font-family:inherit;font-size:15px;padding:0;margin:0 0 10px;cursor:pointer}
 @media (max-width:420px){.grid{grid-template-columns:1fr}.grid > .half-ok{grid-column:auto}}
 </style>
 </head>
@@ -81,7 +83,31 @@ input[readonly]{caret-color:transparent}
   <div id="bad-link" class="card hidden"><div class="sect">ลิงก์ไม่ครบ</div><p class="lead" style="margin:0">กรุณาสแกน QR ที่เคาน์เตอร์คลินิกอีกครั้ง</p></div>
 
   <div id="demo" class="hidden" style="background:#fff4e0;border:1px solid #f3d9a4;color:#9a5b00;border-radius:14px;padding:10px 14px;font-size:14px;margin-bottom:14px">ตัวอย่างหน้าแบบฟอร์ม · ยังไม่ได้เชื่อมต่อ กดส่งได้แต่ข้อมูลไม่ถูกส่งไปไหน</div>
-<form id="f" novalidate>
+<div id="choose">
+    <h1>สวัสดีค่ะ</h1>
+    <p class="lead">เคยมารักษาที่ปราณีคลินิกหรือยัง?</p>
+    <div class="choice">
+      <button class="btn" type="button" id="goNew">ไม่เคยมา<small>ลงทะเบียนคนไข้ใหม่</small></button>
+      <button class="btn btn-o" type="button" id="goOld">เคยมาแล้ว<small>กรอกแค่ชื่อ-นามสกุล</small></button>
+    </div>
+  </div>
+
+  <form id="r" class="hidden" novalidate>
+    <button class="back" type="button" data-back>‹ กลับ</button>
+    <h1>คนไข้เก่า</h1>
+    <p class="lead">กรอกชื่อและนามสกุลให้ตรงกับที่เคยลงทะเบียนไว้</p>
+    <div class="card">
+      <div class="grid">
+        <label class="f"><span>ชื่อ <span class="req">*</span></span><input name="first" autocomplete="given-name" required></label>
+        <label class="f"><span>นามสกุล <span class="req">*</span></span><input name="last" autocomplete="family-name" required></label>
+      </div>
+    </div>
+    <div class="err" id="err2"></div>
+    <button class="btn" id="send2" type="submit">ส่งข้อมูล</button>
+  </form>
+
+<form id="f" class="hidden" novalidate>
+    <button class="back" type="button" data-back>‹ กลับ</button>
     <h1>ลงทะเบียนคนไข้ใหม่</h1>
     <p class="lead">กรอกข้อมูลของผู้ป่วยให้ครบ เพื่อลดเวลารอที่เคาน์เตอร์ ช่องที่มี <span class="req">*</span> ต้องกรอก</p>
 
@@ -161,7 +187,7 @@ const MONTHS_FULL = ['มกราคม','กุมภาพันธ์','ม�
 const $ = s => document.querySelector(s), F = $('#f'), E = F.elements;
 const hash = new URLSearchParams(location.hash.slice(1)), KEY = hash.get('k'), URL_ = hash.get('u'), CID = hash.get('c'), DEMO = hash.get('demo') === '1';
 if (DEMO) $('#demo').classList.remove('hidden');
-else if (!KEY || !URL_ || !/^[A-Za-z0-9_-]{22}$/.test(CID || '') || !/^https:\/\/script\.google(usercontent)?\.com\//.test(URL_)) { F.classList.add('hidden'); $('#bad-link').classList.remove('hidden'); }
+else if (!KEY || !URL_ || !/^[A-Za-z0-9_-]{22}$/.test(CID || '') || !/^https:\/\/script\.google(usercontent)?\.com\//.test(URL_)) { $('#choose').classList.add('hidden'); $('#bad-link').classList.remove('hidden'); }
 
 // --- dropdown lists (same glass picker as the clinic app)
 const MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
@@ -308,6 +334,28 @@ async function encrypt(obj){
   return {v:1, epk:b64u(await crypto.subtle.exportKey('raw', eph.publicKey)), iv:b64u(iv), ct:b64u(ct)};
 }
 
+const R = $('#r');
+const show = id => { ['#choose', '#f', '#r', '#done'].forEach(x => $(x).classList.toggle('hidden', x !== id)); scrollTo({top:0, behavior:'smooth'}); };
+$('#goNew').addEventListener('click', () => { show('#f'); fillTambon(); });
+$('#goOld').addEventListener('click', () => { show('#r'); R.elements.first.focus(); });
+document.querySelectorAll('[data-back]').forEach(b => b.addEventListener('click', () => show('#choose')));
+async function send(data){
+  if (DEMO) return new Promise(r => setTimeout(r, 700));
+  const payload = {...await encrypt(data), cid:CID};
+  const r = await fetch(URL_, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload)});
+  const j = await r.json().catch(() => ({}));
+  if (!j.ok) throw new Error(j.error || 'send');
+}
+const sendErr = err => err && err.message === 'full' ? 'ระบบรับข้อมูลเต็มชั่วคราว กรุณาแจ้งเจ้าหน้าที่' : 'ส่งไม่สำเร็จ ตรวจอินเทอร์เน็ตแล้วลองกดส่งอีกครั้ง';
+R.addEventListener('submit', async e => {
+  e.preventDefault(); const er = $('#err2'), msg = m => { er.textContent = m; er.style.display = m ? 'block' : 'none'; };
+  msg(''); const first = R.elements.first.value.trim(), last = R.elements.last.value.trim();
+  if (!first || !last) return msg('กรุณากรอกชื่อและนามสกุล');
+  const btn = $('#send2'); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>กำลังส่ง…';
+  try { await send({kind:'return', first, last, sentAt:new Date().toISOString()}); R.reset(); show('#done'); }
+  catch (err) { msg(sendErr(err)); }
+  finally { btn.disabled = false; btn.textContent = 'ส่งข้อมูล'; }
+});
 const showErr = m => { const e = $('#err'); e.textContent = m; e.style.display = m ? 'block' : 'none'; if (m) e.scrollIntoView({behavior:'smooth', block:'center'}); };
 F.addEventListener('submit', async e => {
   e.preventDefault(); showErr('');
@@ -321,20 +369,16 @@ F.addEventListener('submit', async e => {
   if ((dp.d || dp.m || dp.y || v('dobText')) && !dob) return showErr('วันเกิดไม่ครบหรือไม่ถูกต้อง ตรวจอีกครั้ง หรือเว้นว่างไว้');
   const data = {title:v('title'), first:v('first'), last:v('last'), sex:v('sex') === 'ชาย' ? 'M' : 'F', dob, cid:v('cid'), phone:v('phone'), job:v('job'),
     houseNo:v('houseNo'), moo:v('moo'), tambon:v('tambon'), amphoe:v('amphoe'), province:v('province'),
-    allergy:v('allergy'), chronic:v('chronic'), emergency:v('emergency'), sentAt:new Date().toISOString()};
+    allergy:v('allergy'), chronic:v('chronic'), emergency:v('emergency'), kind:'new', sentAt:new Date().toISOString()};
   const btn = $('#send'); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>กำลังส่ง…';
   try {
-    if (DEMO) { await new Promise(r => setTimeout(r, 700)); F.reset(); resetDob(); fillTambon(); F.classList.add('hidden'); $('#done').classList.remove('hidden'); scrollTo({top:0, behavior:'smooth'}); return; }
-    const payload = {...await encrypt(data), cid:CID};
-    const r = await fetch(URL_, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload)});
-    const j = await r.json().catch(() => ({}));
-    if (!j.ok) throw new Error(j.error || 'send');
-    F.reset(); resetDob(); fillTambon(); F.classList.add('hidden'); $('#done').classList.remove('hidden'); scrollTo({top:0, behavior:'smooth'});
+    await send(data);
+    F.reset(); resetDob(); fillTambon(); show('#done');
   } catch (err) {
-    showErr(err && err.message === 'full' ? 'ระบบรับข้อมูลเต็มชั่วคราว กรุณาแจ้งเจ้าหน้าที่' : 'ส่งไม่สำเร็จ ตรวจอินเทอร์เน็ตแล้วลองกดส่งอีกครั้ง');
+    showErr(sendErr(err));
   } finally { btn.disabled = false; btn.textContent = 'ส่งข้อมูล'; }
 });
-$('#again').addEventListener('click', () => { $('#done').classList.add('hidden'); F.classList.remove('hidden'); fillTambon(); scrollTo({top:0}); });
+$('#again').addEventListener('click', () => show('#choose'));
 </script>
 </body>
 </html>
